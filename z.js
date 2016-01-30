@@ -4,33 +4,6 @@ var fs = require("fs");
 var path = require("path");
 var pd = require("pretty-data").pd;
 
-// function getKassa () {
-// 	var kassa = argv.k;
-// 	var kassaName;
-// 	if (kassa >=200 && kassa <= 216){
-// 		if (kassa >= 200 && kassa <= 202) kassaName = "Крупская";
-// 		else if (kassa >= 203 && kassa <= 205) kassaName = "Солнечная";
-// 		else if (kassa >= 206 && kassa <= 208) kassaName = "Холоднова";
-// 		else if (kassa >= 209 && kassa <= 212) kassaName = "Енисейская";
-// 		else kassaName = "Юбилейная";
-	
-// 	}else{
-// 		kassaName = "Неизвестная касса";
-// 	}
-// 	return kassaName;
-// }
-
-// function getArgs(){
-// 	var args = {
-
-// 		url:"",
-// 		day:""
-// 	};
-// 	for (var car in args)
-// 		console.log(car + " : " + args[car]);
-// }
-// getArgs();
-// console.log(getKassa());
 
 var dir = __dirname + "/success/";
 if (!fs.existsSync(dir)) 
@@ -52,11 +25,19 @@ dayT	= argv.t;
 var	url = "http://" + shop + ":8090/SET-ERPIntegration/FiscalInfoExport?wsdl";
 
 
+if (argv.h){
+	console.log("-m: mode [day, range]");
+	console.log("-s: shop [shop {ip}]");
+	console.log("-d: day [operday {ГГГГ-ММ-ДД}]");
+};
+
 
 if (argv.m =='date'){
+
 	var args = {
 		dateOperDay: day
 	};
+
 	soap.createClient(url, function(err, client){
 		if (err) {console.log("error create client" + err);return;};
 
@@ -76,11 +57,13 @@ if (argv.m =='date'){
 	});
 }
 
-if (argv.m == 'period'){
+if (argv.m == 'range'){
+
 	var args = {
 		fromDate: dayF,
 		toDate: dayT
 	};
+
 	soap.createClient(url, function(err, client){
 		if (err) {console.log("error create client" + err);return;};
 
